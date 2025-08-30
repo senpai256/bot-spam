@@ -1,0 +1,28 @@
+{
+  "name": "reng",
+  "type": "module",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Jeredy",
+  "license": "MIT",
+  "scripts": {
+    "start": "tsc && node ./dist/index.js",
+    "st": "node ./dist/index.js",
+    "ts": "ts-node src/index.ts",
+    "new": "rimraf ./database/qrcode",
+    "dev": "tsc --watch"
+  },
+  "dependencies": {
+    "baileys": "^6.7.18",
+    "dotenv": "^17.2.1",
+    "path": "^0.12.7",
+    "pino": "^9.9.0",
+    "readline": "^1.3.0",
+    "typescript": "^5.9.2",
+    "vcf": "^2.1.2"
+  },
+  "devDependencies": {
+    "@types/vcf": "^2.0.7",
+    "rimraf": "^6.0.1"
+  }
+}
