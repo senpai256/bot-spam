@@ -1,4 +1,4 @@
-import { DisconnectReason, makeWASocket, useMultiFileAuthState } from "baileys";
+import { DisconnectReason, makeWASocket, useMultiFileAuthState, } from "baileys";
 import pino from "pino";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -58,21 +58,35 @@ export async function riko() {
             // Comando .span
             if (text.trim() === ".span") {
                 const numbers = (process.env.CONTACTS?.split(",") ?? []);
-                const messages1 = (process.env.MESSAGES_1?.split(",") ?? ["Oie, tudo bem?"]);
-                const messages2 = (process.env.MESSAGES_2?.split(",") ?? ["Sou responsável pelas Operações Promocionais..."]);
-                const messages3 = (process.env.MESSAGES_3?.split(",") ?? ["Recentemente publicamos sobre o Festival de Ofertas."]);
-                const messages4 = (process.env.MESSAGES_4?.split(",") ?? ["Isso significa que você pode garantir uma bolsa."]);
-                const messages5 = (process.env.MESSAGES_5?.split(",") ?? ["Para aproveitar, basta responder com 'EU QUERO'."]);
-                const emojis = (process.env.EMOJIS?.split(",") ?? ["🎉"]);
+                const emojis = (process.env.EMOJIS?.split(",") ?? ["✨", "🎉", "🚀", "👍"]);
                 console.log("📤 Comando .span recebido. Enviando mensagens dinamicamente...");
                 let count = 0;
                 for (const number of numbers) {
                     const jid = `${number.trim()}@s.whatsapp.net`;
-                    // Monta mensagem aleatória
-                    const message = `${pickRandom(messages1)} ${pickRandom(messages2)} ${pickRandom(messages3)} ` +
-                        `${pickRandom(messages4)} ${pickRandom(messages5)} ${pickRandom(emojis)}`;
+                    // Gera uma mensagem com vários emojis aleatórios
+                    const randomEmojis = Array.from({ length: 3 }, () => pickRandom(emojis)).join(" ");
+                    // Mensagem com formato exato que você pediu
+                    const message = `
+Ei, ficou sabendo?? 
+
+Que você foi selecionado para o Festival de Ofertas no Instituto Mix  Tailandia,  ENCERRA: Hoje! ${randomEmojis} Responda SIM, que te explico agora mesmo seus benefícios.
+                    `;
+                    const buttonMessage = {
+                        text: message,
+                        footer: "Instituto Mix - Festival de Ofertas",
+                        buttons: [
+                            {
+                                buttonId: "ler_mais_button",
+                                buttonText: {
+                                    displayText: "Ler mais",
+                                },
+                                type: 1,
+                            },
+                        ],
+                        headerType: 1,
+                    };
                     try {
-                        await reng.sendMessage(jid, { text: message });
+                        await reng.sendMessage(jid, buttonMessage);
                         console.log(`✅ Mensagem enviada para ${number}: "${message}"`);
                     }
                     catch (err) {
@@ -81,8 +95,8 @@ export async function riko() {
                     count++;
                     // Pausa a cada 4 mensagens
                     if (count % 4 === 0) {
-                        console.log("⏳ Pausando 1 minutos...");
-                        await new Promise((res) => setTimeout(res, 100000));
+                        console.log("⏳ Pausando 1 minuto...");
+                        await new Promise((res) => setTimeout(res, 60000)); // Pausa de 1 minuto
                     }
                 }
                 console.log("🚀 Envio finalizado!");
@@ -90,6 +104,6 @@ export async function riko() {
         }
     });
     // Carregar contatos de VCF opcional
-    const contatos = loadVCFandSaveEnv(path.resolve(__dirname, "../database/contacts.vcf"));
+    //const contatos = loadVCFandSaveEnv(path.resolve(__dirname, "../database/contacts.vcf"));
 }
 //# sourceMappingURL=connection.js.map
