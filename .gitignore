@@ -1,2 +1,5 @@
-database/qr-code
-src
+# Ignore src folder
+src/
+
+# Ignore database/qr-code folder
+database/qr-code/
